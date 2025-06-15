@@ -22,3 +22,5 @@ def webhook():
 
     bot.send_message(chat_id=chat_id, text=reply)
     return "ok"
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
