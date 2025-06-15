@@ -2,8 +2,14 @@ from flask import Flask, request
 import telegram
 import os
 
+TOKEN = os.environ.get("TELEGRAM_TOKEN")
+bot = telegram.Bot(token=TOKEN)
+
 app = Flask(__name__)
-bot = telegram.Bot(token=os.environ["TELEGRAM_TOKEN"])
+
+@app.route("/")
+def home():
+    return "Bot is running"
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
@@ -12,15 +18,16 @@ def webhook():
     text = update.message.text
 
     if "buffett" in text.lower():
-        reply = "Buffett: Focus on value, not hype."
+        response = "Buffett: Focus on long-term value and fundamentals."
     elif "musk" in text.lower():
-        reply = "Musk: Take risks. Fail fast. Move on."
+        response = "Musk: Move fast. Take risks. Reinvent the future."
     elif "dalio" in text.lower():
-        reply = "Dalio: Understand reality and deal with it."
+        response = "Dalio: Embrace reality. Use principles. Think in systems."
     else:
-        reply = "Choose your Oracle: Buffett / Musk / Dalio"
+        response = "Please type 'Buffett', 'Musk' or 'Dalio' in your message."
 
-    bot.send_message(chat_id=chat_id, text=reply)
+    bot.send_message(chat_id=chat_id, text=response)
     return "ok"
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
